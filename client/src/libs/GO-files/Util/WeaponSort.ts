@@ -1,7 +1,7 @@
 import type { FilterConfigs, SortConfigs } from 'genshin-optimizer/util'
 import type { ICachedWeapon, WeaponSortKey } from 'genshin-optimizer/db'
 import { allStats } from 'genshin-optimizer/stats'
-import i18n from '../i18n'
+import i18n from "i18next";
 
 export function weaponSortConfigs(): SortConfigs<WeaponSortKey, ICachedWeapon> {
   return {

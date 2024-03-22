@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton, Typography } from "@mui/material";
 import type { TFunction } from "i18next";
 import type { ReactNode } from "react";

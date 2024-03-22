@@ -1,0 +1,11 @@
+{
+    "common": {
+      "hello": "Hello",
+      "welcome": "Welcome"
+    },
+    "errors": {
+      "not_found": "Page not found",
+      "server_error": "Internal server error"
+    }
+  }
+  

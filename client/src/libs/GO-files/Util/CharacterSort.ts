@@ -14,7 +14,7 @@ import {
 } from "genshin-optimizer/consts";
 import { allStats, getCharEle } from "genshin-optimizer/stats";
 import type { ArtCharDatabase } from "genshin-optimizer/db";
-import i18n from "../i18n";
+import i18n from "i18next";
 export const characterSortKeys = [
   "new",
   "level",
