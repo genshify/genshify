@@ -11,7 +11,7 @@ i18next
     lng: "en",
     backend: {
       // Path to load localization data from.
-      loadPath: "locales/{{lng}}/{{ns}}.json",
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
     interpolation: {
       escapeValue: false,

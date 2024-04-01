@@ -14,7 +14,7 @@ import type {
   IDocumentFields,
   IDocumentHeader,
 } from "../../Types/sheet";
-import { st, trans } from "../SheetUtil";
+import { nameTrans, st, trans } from "../SheetUtil";
 import type {
   TalentSheetElement,
   TalentSheetElementKey,
@@ -82,7 +82,7 @@ export const charTemplates = (
       talentKey: TalentSheetElementKey,
       partialCond: DocumentConditionalBase
     ) => conditionalTemplate(talentKey, partialCond, chg, img(talentKey)),
-    name: cKey,
+    name: nameTrans(cKey,chg),
   };
 };
 

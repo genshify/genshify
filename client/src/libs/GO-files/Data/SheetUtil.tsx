@@ -66,5 +66,13 @@ export function nameTrans(
   cKey: CharTransKey,
   chg: (i18key: string) => Displayable
 ): Displayable {
-  return chg(cKey) as JSX.Element;
+  return <NameTrans cKey={cKey} chg={chg} />;
+}
+function NameTrans({
+  chg,
+}: {
+  cKey: string;
+  chg: (i18key: string) => Displayable;
+}) {
+  return chg("name") as JSX.Element;
 }
