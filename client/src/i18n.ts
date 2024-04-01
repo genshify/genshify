@@ -7,7 +7,7 @@ i18next
   .use(Backend)
   .init({
     fallbackLng: "en", 
-    debug: true,
+    debug: false,
     lng: "en",
     backend: {
       // Path to load localization data from.

@@ -6,6 +6,7 @@ import { CacheHandler } from "../../enka/handlers/CacheHandler";
 import { Link } from "react-router-dom";
 import { nameSetter } from "../../tools/genshin-optimizer/libs/good/goodDataMaker";
 import { useDataStore } from "../../utils/DataStore";
+import { CharacterContent } from "./CharactersPage";
 
 export default function Showcase() {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +62,7 @@ export default function Showcase() {
 
   const [jsonData, setJsonData] = useState<string>("");
   return (
-    <div className="char container section">
+    <div className="char section">
       <h2 className="section__title-center">Character Details</h2>
       {/* search section */}
       <div className="search__container">
@@ -290,7 +291,7 @@ export default function Showcase() {
 
           {/* showcase section containing every characters */}
 
-          <div className="char_cards_container">
+          {/* <div className="char_cards_container">
             {playerDetails.characters.map((character, index) => (
               <div
                 key={index}
@@ -399,7 +400,7 @@ export default function Showcase() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       )}
 
@@ -432,6 +433,7 @@ export default function Showcase() {
           )}
         </div>
       )}
+      <CharacterContent/>
     </div>
   );
 }

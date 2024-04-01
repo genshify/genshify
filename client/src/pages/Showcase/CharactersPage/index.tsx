@@ -108,29 +108,7 @@ export default function PageCharacter() {
     () => database.charMeta.followAny(() => forceUpdate()),
     [forceUpdate, database]
   );
-
-  const { gender } = useDBMeta();
-  const deleteCharacter = useCallback(
-    async (cKey: CharacterKey) => {
-      let name = getCharSheet(cKey, gender).name;
-      // Use translated string
-      if (typeof name === "object")
-        name = t(
-          `${
-            silly ? "sillyWisher_charNames" : "charNames_gen"
-          }:${charKeyToLocGenderedCharKey(cKey, gender)}`
-        );
-
-      if (!window.confirm(t("removeCharacter", { value: name }))) return;
-      database.chars.remove(cKey);
-    },
-    [database.chars, gender, silly, t]
-  );
-
   const editCharacter = useCharSelectionCallback();
-
-  const navigate = useNavigate();
-
   const deferredState = useDeferredValue(state);
   const deferredDbDirty = useDeferredValue(dbDirty);
   const { charKeyList, totalCharNum } = useMemo(() => {
@@ -155,12 +133,7 @@ export default function PageCharacter() {
     return deferredDbDirty && { charKeyList, totalCharNum };
   }, [database, deferredState, deferredSearchTerm, silly, deferredDbDirty]);
 
-  const {
-    weaponType,
-    element,
-    rarity,
-    pageIndex = 0,
-  } = state;
+  const { weaponType, element, rarity, pageIndex = 0 } = state;
 
   const { charKeyListToShow, numPages, currentPageIndex } = useMemo(() => {
     const numPages = Math.ceil(charKeyList.length / maxNumToDisplay);
@@ -320,83 +293,7 @@ export default function PageCharacter() {
           />
         }
       >
-        <Grid container spacing={1} columns={columns}>
-          {charKeyListToShow.map((charKey) => (
-            <Grid item key={charKey} xs={1}>
-              <CharacterCard
-                characterKey={charKey}
-                onClick={() => navigate(`${charKey}`)}
-                footer={
-                  <>
-                    <Divider />
-                    <Box
-                      sx={{
-                        py: 1,
-                        px: 2,
-                        display: "flex",
-                        gap: 1,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <BootstrapTooltip
-                        placement="top"
-                        title={<Typography>{t("tabs.talent")}</Typography>}
-                      >
-                        <IconButton
-                          onClick={() => navigate(`${charKey}/talent`)}
-                        >
-                          <FactCheck />
-                        </IconButton>
-                      </BootstrapTooltip>
-                      <BootstrapTooltip
-                        placement="top"
-                        title={<Typography>{t("tabs.teambuffs")}</Typography>}
-                      >
-                        <IconButton
-                          onClick={() => navigate(`${charKey}/teambuffs`)}
-                        >
-                          <Groups />
-                        </IconButton>
-                      </BootstrapTooltip>
-                      <BootstrapTooltip
-                        placement="top"
-                        title={<Typography>{t("tabs.optimize")}</Typography>}
-                      >
-                        <IconButton
-                          onClick={() => navigate(`${charKey}/optimize`)}
-                        >
-                          <TrendingUp />
-                        </IconButton>
-                      </BootstrapTooltip>
-                      <BootstrapTooltip
-                        placement="top"
-                        title={<Typography>{t("tabs.theorycraft")}</Typography>}
-                      >
-                        <IconButton
-                          onClick={() => navigate(`${charKey}/theorycraft`)}
-                        >
-                          <Science />
-                        </IconButton>
-                      </BootstrapTooltip>
-                      <Divider orientation="vertical" />
-                      <BootstrapTooltip
-                        placement="top"
-                        title={<Typography>{t("delete")}</Typography>}
-                      >
-                        <IconButton
-                          color="error"
-                          onClick={() => deleteCharacter(charKey)}
-                        >
-                          <DeleteForever />
-                        </IconButton>
-                      </BootstrapTooltip>
-                    </Box>
-                  </>
-                }
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <CharacterContent/>
       </Suspense>
       {numPages > 1 && (
         <CardDark>
@@ -424,5 +321,177 @@ export default function PageCharacter() {
         </CardDark>
       )}
     </Box>
+  );
+}
+
+export function CharacterContent() {
+  const { t } = useTranslation([
+    "page_character",
+   "charNames_gen",
+  ]);
+  
+  const { silly } = useContext(SillyContext);
+  const database = useDatabase();
+  const [state, setState] = useState(() => database.displayCharacter.get());
+  useEffect(
+    () => database.displayCharacter.follow((_r, s) => setState(s)),
+    [database, setState]
+  );
+  const [searchTerm] = useState("");
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+  const brPt = useMediaQueryUp();
+  const maxNumToDisplay = numToShowMap[brPt];
+
+  const [dbDirty, forceUpdate] = useForceUpdate();
+  // Set follow, should run only once
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: "/characters" });
+    return database.chars.followAny(
+      (_k, r) => (r === "new" || r === "remove") && forceUpdate()
+    );
+  }, [forceUpdate, database]);
+
+  // character favorite updater
+  useEffect(
+    () => database.charMeta.followAny(() => forceUpdate()),
+    [forceUpdate, database]
+  );
+
+  const { gender } = useDBMeta();
+  const deleteCharacter = useCallback(
+    async (cKey: CharacterKey) => {
+      let name = getCharSheet(cKey, gender).name;
+      // Use translated string
+      if (typeof name === "object")
+        name = t(
+          `${
+            silly ? "sillyWisher_charNames" : "charNames_gen"
+          }:${charKeyToLocGenderedCharKey(cKey, gender)}`
+        );
+
+      if (!window.confirm(t("removeCharacter", { value: name }))) return;
+      database.chars.remove(cKey);
+    },
+    [database.chars, gender, silly, t]
+  );
+  const navigate = useNavigate();
+
+  const deferredState = useDeferredValue(state);
+  const deferredDbDirty = useDeferredValue(dbDirty);
+  const { charKeyList } = useMemo(() => {
+    const chars = database.chars.keys;
+    const totalCharNum = chars.length;
+    const { element, weaponType, rarity, sortType, ascending } = deferredState;
+    const charKeyList = database.chars.keys
+      .filter(
+        filterFunction(
+          { element, weaponType, rarity, name: deferredSearchTerm },
+          characterFilterConfigs(database, silly)
+        )
+      )
+      .sort(
+        sortFunction(
+          characterSortMap[sortType] ?? [],
+          ascending,
+          characterSortConfigs(database, silly),
+          ["new", "favorite"]
+        )
+      );
+    return deferredDbDirty && { charKeyList, totalCharNum };
+  }, [database, deferredState, deferredSearchTerm, silly, deferredDbDirty]);
+
+  const { pageIndex = 0 } = state;
+
+  const { charKeyListToShow} = useMemo(() => {
+    const numPages = Math.ceil(charKeyList.length / maxNumToDisplay);
+    const currentPageIndex = clamp(pageIndex, 0, numPages - 1);
+    return {
+      charKeyListToShow: charKeyList.slice(
+        currentPageIndex * maxNumToDisplay,
+        (currentPageIndex + 1) * maxNumToDisplay
+      ),
+      numPages,
+      currentPageIndex,
+    };
+  }, [charKeyList, pageIndex, maxNumToDisplay]);
+  
+ 
+
+ 
+
+  return (
+    <Grid container spacing={1} columns={columns}>
+      {charKeyListToShow.map((charKey) => (
+        <Grid item key={charKey} xs={1}>
+          <CharacterCard
+            characterKey={charKey}
+            onClick={() => navigate(`${charKey}`)}
+            footer={
+              <>
+                <Divider />
+                <Box
+                  sx={{
+                    py: 1,
+                    px: 2,
+                    display: "flex",
+                    gap: 1,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <BootstrapTooltip
+                    placement="top"
+                    title={<Typography>{t("tabs.talent")}</Typography>}
+                  >
+                    <IconButton onClick={() => navigate(`${charKey}/talent`)}>
+                      <FactCheck />
+                    </IconButton>
+                  </BootstrapTooltip>
+                  <BootstrapTooltip
+                    placement="top"
+                    title={<Typography>{t("tabs.teambuffs")}</Typography>}
+                  >
+                    <IconButton
+                      onClick={() => navigate(`${charKey}/teambuffs`)}
+                    >
+                      <Groups />
+                    </IconButton>
+                  </BootstrapTooltip>
+                  <BootstrapTooltip
+                    placement="top"
+                    title={<Typography>{t("tabs.optimize")}</Typography>}
+                  >
+                    <IconButton onClick={() => navigate(`${charKey}/optimize`)}>
+                      <TrendingUp />
+                    </IconButton>
+                  </BootstrapTooltip>
+                  <BootstrapTooltip
+                    placement="top"
+                    title={<Typography>{t("tabs.theorycraft")}</Typography>}
+                  >
+                    <IconButton
+                      onClick={() => navigate(`${charKey}/theorycraft`)}
+                    >
+                      <Science />
+                    </IconButton>
+                  </BootstrapTooltip>
+                  <Divider orientation="vertical" />
+                  <BootstrapTooltip
+                    placement="top"
+                    title={<Typography>{t("delete")}</Typography>}
+                  >
+                    <IconButton
+                      color="error"
+                      onClick={() => deleteCharacter(charKey)}
+                    >
+                      <DeleteForever />
+                    </IconButton>
+                  </BootstrapTooltip>
+                </Box>
+              </>
+            }
+          />
+        </Grid>
+      ))}
+    </Grid>
   );
 }
