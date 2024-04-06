@@ -27,8 +27,6 @@ export default function App() {
   // ? retrieves the dbIndex from local storage, parsing it into an integer. index indicates which database to use.
   const dbIndex = parseInt(localStorage.getItem("dbIndex") || "1");
   const [databases, setDatabases] = useState(() => {
-    localStorage.removeItem("GONewTabDetection");
-    localStorage.setItem("GONewTabDetection", "debug");
     return ([1, 2] as const).map((index) => {
       if (index === dbIndex) {
         return new ArtCharDatabase(index, new DBLocalStorage(localStorage));

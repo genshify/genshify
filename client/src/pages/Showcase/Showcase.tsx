@@ -37,6 +37,9 @@ export default function Showcase() {
           } catch (error) {
             console.error("Error updating database:", error);
           }
+          // reloads the page to show the updated data // ? this is a temporary solution 
+          // todo: find a way to update the data without reloading the page
+          window.location.reload();
         })
         .catch((err) => console.log(err));
       setIsLoading(false);
@@ -433,7 +436,7 @@ export default function Showcase() {
           )}
         </div>
       )}
-      <CharacterContent/>
+      <CharacterContent />
     </div>
   );
 }

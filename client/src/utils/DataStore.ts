@@ -13,7 +13,8 @@ export function useDataStore() {
   ) => {
     const database = databases[index-1];
     if (!playerData) return undefined;
-
+    database.clear()
+    database.toExtraLocalDB()
     let parsed;
     try {
       parsed = JSON.parse(playerData);
@@ -49,7 +50,7 @@ export function useDataStore() {
       console.error("Unknown data format");
       return undefined;
     }
+    
   };
-
   return dataStore;
 }
