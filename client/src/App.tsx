@@ -3,7 +3,6 @@ import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Beginner from "./pages/Beginner/Beginner";
 import Showcase from "./pages/Showcase/Showcase";
-import PageCharacter from "./pages/Showcase/CharactersPage";
 import CharacterDisplay from "./pages/Showcase/CharactersPage/CharacterDisplay";
 
 import { Container, Grid, Skeleton, ThemeProvider } from "@mui/material";
@@ -91,9 +90,8 @@ export default function App() {
                             <Route index element={<Home />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/beginner" element={<Beginner />} />
-                            <Route path="showcase/" element={<Showcase />} />
-                            <Route path="characters/*">
-                              <Route index element={<PageCharacter />} />
+                            <Route path="showcase/*">
+                              <Route index element={<Showcase />} />
                               <Route
                                 path=":characterKey/*"
                                 element={<CharacterDisplay />}
