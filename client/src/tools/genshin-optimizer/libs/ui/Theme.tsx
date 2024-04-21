@@ -306,3 +306,124 @@ export const theme = createTheme({
     }),
   },
 });
+
+export const dendroTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#8ab392",
+      dark: "#0e2713",
+      light: "#edfdf1",
+    },
+    background: {
+      default: '#edfdf1',
+      paper: '#0C1020',
+    },
+  },
+});
+export const pyroTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#ff6e69",
+      dark: "#ff3d37",
+      light: "#ffc8c7",
+    },
+    background: {
+      default: '#ffc8c7',
+      paper: '#0C1020',
+    },
+  },
+});
+export const cryoTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#aed0ff",
+      dark: "	#95bfff",
+      light: "#dbf3ff",
+    },
+    background: {
+      default: '#dbf3ff',
+      paper: '#0C1020',
+    },
+  },
+});
+export const hydroTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#6892ff",
+      dark: "#356dff",
+      light: "#9bb7ff",
+    },
+    background: {
+      default: '#9bb7ff',
+      paper: '#0C1020',
+    },
+  },
+});
+export const electroTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#d08fff",
+      dark: "#b959ff",
+      light: "#e4c0ff",
+    },
+    background: {
+      default: '#e4c0ff',
+      paper: '#0C1020',
+    },
+  },
+});
+export const geoTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#ffe34c",
+      dark: "#ffdb19",
+      light: "#ffef99",
+    },
+    background: {
+      default: '#ffef99',
+      paper: '#0C1020',
+    },
+  },
+});
+export const anemoTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#00ff7f",
+      dark: "	#008944",
+      light: "#89ffc4",
+    },
+    background: {
+      default: '#89ffc4',
+      paper: '#0C1020',
+    },
+  },
+});
+export const darkTheme = createTheme({
+  ...theme,
+  palette: {
+    ...theme.palette,
+    primary: {
+      main: "#6892ff",
+      dark: "#356dff",
+      light: "#9bb7ff",
+    },
+    background: {
+      default: '#9bb7ff',
+      paper: '#0C1020',
+    },
+  },
+});

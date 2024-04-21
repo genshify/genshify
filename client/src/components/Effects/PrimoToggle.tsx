@@ -7,9 +7,15 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 export function SnowToggle() {
   const { snow, setSnow } = useContext(SnowContext);
   return (
-    <Button
-      fullWidth
-      color={snow ? "success" : "secondary"}
+    <Button 
+      sx={{ m: 1,
+        background: "background.paper",
+        color: "text.primary",
+        "&:hover": {
+          background: "background.default",
+        },
+       }}    
+      color={snow ? "primary" : "secondary"}
       onClick={() => setSnow(!snow)}
       startIcon={snow ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
     >

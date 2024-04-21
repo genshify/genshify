@@ -5,9 +5,9 @@ import Beginner from "./pages/Beginner/Beginner";
 import Showcase from "./pages/Showcase/Showcase";
 import CharacterDisplay from "./pages/Showcase/CharactersPage/CharacterDisplay";
 
-import { Container, Grid, Skeleton, ThemeProvider } from "@mui/material";
+import { Container, Grid, Skeleton,CssBaseline } from "@mui/material";
 import { DatabaseContext } from "genshin-optimizer/db-ui";
-import { theme } from "genshin-optimizer/ui";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ErrorBoundary from "./ErrorBoundary";
@@ -21,6 +21,7 @@ import { DBLocalStorage, SandboxStorage } from "genshin-optimizer/database";
 import Footer from "./components/Navbar/Footer";
 import Header from "./components/Navbar/Header";
 import { SnowContext, useSnow } from "./contexts/PrimoContext";
+import { ThemeProviderComponent } from "./contexts/ThemeContext";
 
 export default function App() {
   // ? retrieves the dbIndex from local storage, parsing it into an integer. index indicates which database to use.
@@ -61,7 +62,8 @@ export default function App() {
         <Route
           path="/*"
           element={
-            <ThemeProvider theme={theme}>
+            <ThemeProviderComponent>
+              <CssBaseline/>
               <SnowContext.Provider value={SnowContextObj}>
                 <DatabaseContext.Provider value={dbContextObj}>
                   <ErrorBoundary>
@@ -109,7 +111,7 @@ export default function App() {
                   </ErrorBoundary>
                 </DatabaseContext.Provider>
               </SnowContext.Provider>
-            </ThemeProvider>
+            </ThemeProviderComponent>
           }
         />
       </Routes>

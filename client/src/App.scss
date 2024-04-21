@@ -19,9 +19,6 @@ div#formula > * {
   text-indent: 0;
 }
 
-body {
-  background: radial-gradient(ellipse at bottom, #ffffff 0%, #a4dfbc 100%);
-}
 
 @function random_range($min, $max) {
   $rand: random();

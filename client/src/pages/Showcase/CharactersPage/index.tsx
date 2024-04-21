@@ -1,31 +1,19 @@
 import { useForceUpdate, useMediaQueryUp } from "genshin-optimizer/react-util";
 import { clamp, filterFunction, sortFunction } from "genshin-optimizer/util";
-import type { CharacterKey } from "genshin-optimizer/consts";
 import {
   allCharacterRarityKeys,
   allElementKeys,
   allWeaponTypeKeys,
-  charKeyToLocGenderedCharKey,
 } from "genshin-optimizer/consts";
-import { useDBMeta, useDatabase } from "genshin-optimizer/db-ui";
-import {
-  DeleteForever,
-  FactCheck,
-  Groups,
-  Science,
-  TrendingUp,
-} from "@mui/icons-material";
+import { useDatabase } from "genshin-optimizer/db-ui";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Box,
   Button,
   CardContent,
-  Divider,
   Grid,
-  IconButton,
   Skeleton,
   TextField,
-  Typography,
 } from "@mui/material";
 import type { ChangeEvent } from "react";
 import React, {
@@ -41,7 +29,6 @@ import React, {
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import BootstrapTooltip from "../../../libs/GO-files/Components/BootstrapTooltip";
 import CardDark from "../../../libs/GO-files/Components/Card/CardDark";
 import CharacterCard from "../../../libs/GO-files/Components/Character/CharacterCard";
 import PageAndSortOptionSelect from "../../../libs/GO-files/Components/PageAndSortOptionSelect";
@@ -325,11 +312,7 @@ export default function PageCharacter() {
 }
 
 export function CharacterContent() {
-  const { t } = useTranslation([
-    "page_character",
-   "charNames_gen",
-  ]);
-  
+
   const { silly } = useContext(SillyContext);
   const database = useDatabase();
   const [state, setState] = useState(() => database.displayCharacter.get());
@@ -357,23 +340,6 @@ export function CharacterContent() {
     [forceUpdate, database]
   );
 
-  const { gender } = useDBMeta();
-  const deleteCharacter = useCallback(
-    async (cKey: CharacterKey) => {
-      let name = getCharSheet(cKey, gender).name;
-      // Use translated string
-      if (typeof name === "object")
-        name = t(
-          `${
-            silly ? "sillyWisher_charNames" : "charNames_gen"
-          }:${charKeyToLocGenderedCharKey(cKey, gender)}`
-        );
-
-      if (!window.confirm(t("removeCharacter", { value: name }))) return;
-      database.chars.remove(cKey);
-    },
-    [database.chars, gender, silly, t]
-  );
   const navigate = useNavigate();
 
   const deferredState = useDeferredValue(state);
@@ -425,70 +391,7 @@ export function CharacterContent() {
         <Grid item key={charKey} xs={1}>
           <CharacterCard
             characterKey={charKey}
-            onClick={() => navigate(`${charKey}`)}
-            footer={
-              <>
-                <Divider />
-                <Box
-                  sx={{
-                    py: 1,
-                    px: 2,
-                    display: "flex",
-                    gap: 1,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <BootstrapTooltip
-                    placement="top"
-                    title={<Typography>{t("tabs.talent")}</Typography>}
-                  >
-                    <IconButton onClick={() => navigate(`${charKey}/talent`)}>
-                      <FactCheck />
-                    </IconButton>
-                  </BootstrapTooltip>
-                  <BootstrapTooltip
-                    placement="top"
-                    title={<Typography>{t("tabs.teambuffs")}</Typography>}
-                  >
-                    <IconButton
-                      onClick={() => navigate(`${charKey}/teambuffs`)}
-                    >
-                      <Groups />
-                    </IconButton>
-                  </BootstrapTooltip>
-                  <BootstrapTooltip
-                    placement="top"
-                    title={<Typography>{t("tabs.optimize")}</Typography>}
-                  >
-                    <IconButton onClick={() => navigate(`${charKey}/optimize`)}>
-                      <TrendingUp />
-                    </IconButton>
-                  </BootstrapTooltip>
-                  <BootstrapTooltip
-                    placement="top"
-                    title={<Typography>{t("tabs.theorycraft")}</Typography>}
-                  >
-                    <IconButton
-                      onClick={() => navigate(`${charKey}/theorycraft`)}
-                    >
-                      <Science />
-                    </IconButton>
-                  </BootstrapTooltip>
-                  <Divider orientation="vertical" />
-                  <BootstrapTooltip
-                    placement="top"
-                    title={<Typography>{t("delete")}</Typography>}
-                  >
-                    <IconButton
-                      color="error"
-                      onClick={() => deleteCharacter(charKey)}
-                    >
-                      <DeleteForever />
-                    </IconButton>
-                  </BootstrapTooltip>
-                </Box>
-              </>
-            }
+            onClick={() => navigate(`${charKey}`)}           
           />
         </Grid>
       ))}

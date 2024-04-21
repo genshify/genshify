@@ -90,7 +90,7 @@ export const theme = createTheme({
       name: 'error',
     }),
     background: {
-      default: '#0C1020',
+      default: '#edfdf1',
       paper: '#0C1020',
     },
     info: defaultTheme.palette.augmentColor({
@@ -98,7 +98,7 @@ export const theme = createTheme({
       name: 'info',
     }),
     text: {
-      primary: 'rgba(255,255,255,0.9)',
+      primary: '#000000',
     },
     contentNormal: defaultTheme.palette.augmentColor({
       color: { main: '#1b263b' },
@@ -120,31 +120,6 @@ export const theme = createTheme({
     red: defaultTheme.palette.augmentColor({
       color: { main: '#ff0000' },
       name: 'red',
-    }),
-
-    discord: defaultTheme.palette.augmentColor({
-      color: { main: '#5663F7' },
-      name: 'discord',
-    }),
-    patreon: defaultTheme.palette.augmentColor({
-      color: { main: '#f96854', contrastText: '#ffffff' },
-      name: 'patreon',
-    }),
-    twitch: defaultTheme.palette.augmentColor({
-      color: { main: '#6441a5' },
-      name: 'twitch',
-    }),
-    twitter: defaultTheme.palette.augmentColor({
-      color: { main: '#55acee', contrastText: '#ffffff' },
-      name: 'twitter',
-    }),
-    paypal: defaultTheme.palette.augmentColor({
-      color: { main: '#00457C' },
-      name: 'paypal',
-    }),
-    keqing: defaultTheme.palette.augmentColor({
-      color: { main: '#584862' },
-      name: 'keqing',
     }),
   },
   typography: {
