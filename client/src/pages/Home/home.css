@@ -12,14 +12,20 @@
   margin-bottom: var(--mb-1);
 }
 
-
-.home-data{
-  width: 50%;
-}
 .home-container{
   display: flex;
 }
 .swiper-container {
   width: 50%;
   height: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .home-container{
+    flex-direction: column;
+  }
+  .swiper-container{
+    width: 100%;
+  }
+  
 }
