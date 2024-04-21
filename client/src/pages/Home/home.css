@@ -1,13 +1,25 @@
-.home__img {
-  width: 250px;
+.home-img {
+  height: 500px;
   justify-self: center;
 }
-.home__title {
+.home-title {
   font-size: var(--biggest-font-size);
   line-height: 144%;
   font-weight: var(--font-bold);
   margin-bottom: var(--mb-0-75);
 }
-.home__description {
+.home-description {
   margin-bottom: var(--mb-1);
+}
+
+
+.home-data{
+  width: 50%;
+}
+.home-container{
+  display: flex;
+}
+.swiper-container {
+  width: 50%;
+  height: 50%;
 }
