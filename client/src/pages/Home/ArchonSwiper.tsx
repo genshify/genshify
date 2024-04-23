@@ -1,4 +1,4 @@
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,7 +13,8 @@ import {
   cryoTheme,
   anemoTheme,
 } from "genshin-optimizer/ui";
-
+import { useRef } from "react";
+import { Swiper as SwiperType } from "swiper/types";
 const archons = {
   nahida: {
     name: "Nahida",
@@ -68,20 +69,30 @@ const archons = {
 };
 
 export default function ArchonSwiper() {
-  const { changeTheme } = useThemeContext();
-  const swiper = useSwiper();
+  const { changeTheme, swiperIndex } = useThemeContext();
+  const swiperRef = useRef<SwiperType | undefined>(undefined);
+  swiperRef.current?.slideTo(swiperIndex);
   return (
     <Swiper
+      initialSlide={swiperIndex}
+      style={{
+        height: "400px",
+      }}
       modules={[Navigation, Pagination]}
-      spaceBetween={20}
+      spaceBetween={50}
       slidesPerView={1}
       navigation
       loop={true}
       pagination={{ clickable: true, dynamicBullets: true }}
-      //i want to console log the key of the archon when the slide changes
       onSlideChange={(swiper) =>
-        changeTheme(archons[Object.keys(archons)[swiper.realIndex]].theme)
+        changeTheme(
+          archons[Object.keys(archons)[swiper.realIndex]].theme,
+          swiper.realIndex
+        )
       }
+      onSwiper={(swiper) => {
+        swiperRef.current = swiper;
+      }}
     >
       {Object.keys(archons).map((archon) => (
         <SwiperSlide
@@ -93,9 +104,6 @@ export default function ArchonSwiper() {
           key={archon}
         >
           <img
-            onClick={() => {
-              swiper.slideTo(4);
-            }}
             src={archons[archon].image}
             className="home-img"
             alt=""

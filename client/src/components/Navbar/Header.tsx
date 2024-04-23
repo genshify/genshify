@@ -84,9 +84,121 @@ export default function Header({ anchor }: { anchor: string }) {
   );
 }
 
+function Settings(){
+  const [value, setValue] = useState("dendro");
+  const { changeTheme } = useThemeContext();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = (event.target as HTMLInputElement).value;
+    setValue(newValue);
+    switch (newValue) {
+      case "dendro":
+        changeTheme(dendroTheme,0);
+        break;
+      case "hydro":
+        changeTheme(hydroTheme,4)
+        break;
+      case "pyro":
+        changeTheme(pyroTheme,3)
+        break;
+      case "cryo":
+        changeTheme(cryoTheme,5)
+        break;
+      case "electro":
+        changeTheme(electroTheme,1)
+        break;
+      case "anemo":
+        changeTheme(anemoTheme,2)
+        break;
+      case "geo":
+        changeTheme(geoTheme,6)
+        break;
+      case "dark":
+        changeTheme(darkTheme,7)
+        break;
+      default:
+        changeTheme(dendroTheme,0)
+        break;
+    }
+  };
+  return(
+    <div>
+    <FormControl
+    sx={{
+      padding: "10px",
+    }}
+  >
+    <FormLabel id="demo-radio-buttons-group-label">Theme</FormLabel>
+    <RadioGroup
+      aria-labelledby="Select theme"
+      defaultValue="dendro"
+      name="theme"
+      value={value}
+      onChange={handleChange}
+    >
+      <FormControlLabel
+        value="dendro"
+        control={<Radio />}
+        label="Dendro Theme"
+      />
+      <FormControlLabel
+        value="hydro"
+        control={<Radio />}
+        label="Hydro Theme"
+      />
+      <FormControlLabel
+        value="pyro"
+        control={<Radio />}
+        label="Pyro Theme"
+      />
+      <FormControlLabel
+        value="electro"
+        control={
+          <Radio
+            sx={{
+              color: pink[800],
+              "&.Mui-checked": {
+                color: pink[600],
+              },
+            }}
+          />
+        }
+        label="Electro Theme"
+      />
+      <FormControlLabel
+        value="anemo"
+        control={<Radio />}
+        label="Anemo Theme"
+      />
+      <FormControlLabel
+        value="cryo"
+        control={<Radio />}
+        label="Cryo Theme"
+      />
+      <FormControlLabel
+        value="geo"
+        control={<Radio />}
+        label="geo Theme"
+      />
+      <FormControlLabel
+        value="dark"
+        control={<Radio />}
+        label="Dark Theme"
+      />
+    </RadioGroup>
+  </FormControl>
+
+  <Divider />
+  <br />
+  <SnowToggle />
+  <br />
+  <Divider />
+  </div>
+  )
+}
+
 function HeaderContent({ anchor }: { anchor: string }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const {
     params: { currentTab },
@@ -98,41 +210,6 @@ function HeaderContent({ anchor }: { anchor: string }) {
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
-  };
-  const [value, setValue] = useState("dendro");
-  const { changeTheme } = useThemeContext();
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = (event.target as HTMLInputElement).value;
-    setValue(newValue);
-    switch (newValue) {
-      case "dendro":
-        changeTheme(dendroTheme);
-        break;
-      case "hydro":
-        changeTheme(hydroTheme)
-        break;
-      case "pyro":
-        changeTheme(pyroTheme)
-        break;
-      case "cryo":
-        changeTheme(cryoTheme)
-        break;
-      case "electro":
-        changeTheme(electroTheme)
-        break;
-      case "anemo":
-        changeTheme(anemoTheme)
-        break;
-      case "geo":
-        changeTheme(geoTheme)
-        break;
-      case "dark":
-        changeTheme(darkTheme)
-        break;
-      default:
-        changeTheme(dendroTheme)
-        break;
-    }
   };
 
   if (isMobile)
@@ -241,76 +318,7 @@ function HeaderContent({ anchor }: { anchor: string }) {
         </div>
       </AppBar>
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-        <FormControl
-          sx={{
-            padding: "10px",
-          }}
-        >
-          <FormLabel id="demo-radio-buttons-group-label">Theme</FormLabel>
-          <RadioGroup
-            aria-labelledby="Select theme"
-            defaultValue="dendro"
-            name="theme"
-            value={value}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="dendro"
-              control={<Radio />}
-              label="Dendro Theme"
-            />
-            <FormControlLabel
-              value="hydro"
-              control={<Radio />}
-              label="Hydro Theme"
-            />
-            <FormControlLabel
-              value="pyro"
-              control={<Radio />}
-              label="Pyro Theme"
-            />
-            <FormControlLabel
-              value="electro"
-              control={
-                <Radio
-                  sx={{
-                    color: pink[800],
-                    "&.Mui-checked": {
-                      color: pink[600],
-                    },
-                  }}
-                />
-              }
-              label="Electro Theme"
-            />
-            <FormControlLabel
-              value="anemo"
-              control={<Radio />}
-              label="Anemo Theme"
-            />
-            <FormControlLabel
-              value="cryo"
-              control={<Radio />}
-              label="Cryo Theme"
-            />
-            <FormControlLabel
-              value="geo"
-              control={<Radio />}
-              label="geo Theme"
-            />
-            <FormControlLabel
-              value="dark"
-              control={<Radio />}
-              label="Dark Theme"
-            />
-          </RadioGroup>
-        </FormControl>
-
-        <Divider />
-        <br />
-        <SnowToggle />
-        <br />
-        <Divider />
+        <Settings/>
       </Drawer>
     </Box>
   );
@@ -340,8 +348,8 @@ function MobileHeader({
           alignItems: "center",
           flexDirection: "row",
         }}
-        sx={{ bgcolor: "#edfdf1" }}
-        elevation={0}
+        sx={{ bgcolor: "primary.light" }}
+        elevation={1}
       >
         <Box display="flex" alignItems="center">
           <Link to={"/"}>
@@ -381,6 +389,7 @@ function MobileHeader({
               );
             })}
           </List>
+          <Settings/>
         </Drawer>
         <Toolbar>
           <Box flexGrow={1} />
@@ -394,6 +403,7 @@ function MobileHeader({
           </IconButton>
         </Toolbar>
       </AppBar>
+      
       {/* add a blank toolbar to keep space and provide a scroll anchor */}
       <Toolbar id={anchor} />
     </>

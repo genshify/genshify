@@ -1,5 +1,5 @@
 .home-img {
-  height: 500px;
+  height: 400px;
   justify-self: center;
 }
 .home-title {
@@ -20,12 +20,15 @@
   height: 50%;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 650px) {
   .home-container{
     flex-direction: column;
   }
   .swiper-container{
     width: 100%;
   }
-  
+  .home-img{
+    max-width:300px ;
+    max-height:300px ;
+  }
 }

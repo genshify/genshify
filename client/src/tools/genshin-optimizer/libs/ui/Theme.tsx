@@ -315,6 +315,7 @@ export const dendroTheme = createTheme({
       main: "#8ab392",
       dark: "#0e2713",
       light: "#edfdf1",
+      contrastText:"#0e2713"
     },
     background: {
       default: '#edfdf1',
