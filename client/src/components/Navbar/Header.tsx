@@ -34,7 +34,7 @@ import {
   electroTheme,
   geoTheme,
   anemoTheme,
-  darkTheme
+  darkTheme,
 } from "genshin-optimizer/ui";
 type ITab = {
   to: string;
@@ -84,116 +84,100 @@ export default function Header({ anchor }: { anchor: string }) {
   );
 }
 
-function Settings(){
-  const [value, setValue] = useState("dendro");
-  const { changeTheme } = useThemeContext();
+function Settings() {
+  
+  const { changeTheme,swiperIndex } = useThemeContext();
+  const themes = {
+    dendro: { theme: dendroTheme, index: 0 },
+    electro: { theme: electroTheme, index: 1 },
+    anemo: { theme: anemoTheme, index: 2 },
+    pyro: { theme: pyroTheme, index: 3 },
+    hydro: { theme: hydroTheme, index: 4 },
+    cryo: { theme: cryoTheme, index: 5 },
+    geo: { theme: geoTheme, index: 6 },
+    dark: { theme: darkTheme, index: 7 },
+  };
+  const themeOptions = {
+    dendro: {
+      value: "dendro",
+      label: "Dendro Theme",
+    },
+    electro: {
+      value: "electro",
+      label: "Electro Theme",
+    },
+    anemo: {
+      value: "anemo",
+      label: "Anemo Theme",
+    },
+    pyro: {
+      value: "pyro",
+      label: "Pyro Theme",
+    },
+    hydro: {
+      value: "hydro",
+      label: "Hydro Theme",
+    },
+    cryo: {
+      value: "cryo",
+      label: "Cryo Theme",
+    },
+    geo: {
+      value: "geo",
+      label: "Geo Theme",
+    },
+    dark: {
+      value: "dark",
+      label: "Dark Theme",
+    },
+  };
+  const [value, setValue] = useState(themeOptions[Object.keys(themeOptions)[swiperIndex]].value);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = (event.target as HTMLInputElement).value;
+    const selectedTheme =
+      themes[newValue as keyof typeof themes] || themes.dendro;
     setValue(newValue);
-    switch (newValue) {
-      case "dendro":
-        changeTheme(dendroTheme,0);
-        break;
-      case "hydro":
-        changeTheme(hydroTheme,4)
-        break;
-      case "pyro":
-        changeTheme(pyroTheme,3)
-        break;
-      case "cryo":
-        changeTheme(cryoTheme,5)
-        break;
-      case "electro":
-        changeTheme(electroTheme,1)
-        break;
-      case "anemo":
-        changeTheme(anemoTheme,2)
-        break;
-      case "geo":
-        changeTheme(geoTheme,6)
-        break;
-      case "dark":
-        changeTheme(darkTheme,7)
-        break;
-      default:
-        changeTheme(dendroTheme,0)
-        break;
-    }
+    changeTheme(selectedTheme.theme, selectedTheme.index);
   };
-  return(
+  return (
     <div>
-    <FormControl
-    sx={{
-      padding: "10px",
-    }}
-  >
-    <FormLabel id="demo-radio-buttons-group-label">Theme</FormLabel>
-    <RadioGroup
-      aria-labelledby="Select theme"
-      defaultValue="dendro"
-      name="theme"
-      value={value}
-      onChange={handleChange}
-    >
-      <FormControlLabel
-        value="dendro"
-        control={<Radio />}
-        label="Dendro Theme"
-      />
-      <FormControlLabel
-        value="hydro"
-        control={<Radio />}
-        label="Hydro Theme"
-      />
-      <FormControlLabel
-        value="pyro"
-        control={<Radio />}
-        label="Pyro Theme"
-      />
-      <FormControlLabel
-        value="electro"
-        control={
-          <Radio
-            sx={{
-              color: pink[800],
-              "&.Mui-checked": {
-                color: pink[600],
-              },
-            }}
-          />
-        }
-        label="Electro Theme"
-      />
-      <FormControlLabel
-        value="anemo"
-        control={<Radio />}
-        label="Anemo Theme"
-      />
-      <FormControlLabel
-        value="cryo"
-        control={<Radio />}
-        label="Cryo Theme"
-      />
-      <FormControlLabel
-        value="geo"
-        control={<Radio />}
-        label="geo Theme"
-      />
-      <FormControlLabel
-        value="dark"
-        control={<Radio />}
-        label="Dark Theme"
-      />
-    </RadioGroup>
-  </FormControl>
+      <FormControl
+        sx={{
+          padding: "10px",
+        }}
+      >
+        <FormLabel id="demo-radio-buttons-group-label">Theme</FormLabel>
+        <RadioGroup
+          aria-labelledby="Select theme"
+          defaultValue="geo"
+          name="theme"
+          value={value}
+          onChange={handleChange}
+        >
+          {Object.values(themeOptions).map((option) => (
+            <FormControlLabel
+              key={option.value}
+              value={option.value}
+              sx={{
+                color: `${option.value}.main`,
+                "&.Mui-checked": {
+                  color: pink[600],
+                },
+              }}
+              control={<Radio />}
+              label={option.label}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
 
-  <Divider />
-  <br />
-  <SnowToggle />
-  <br />
-  <Divider />
-  </div>
-  )
+      <Divider />
+      <br />
+      <SnowToggle />
+      <br />
+      <Divider />
+    </div>
+  );
 }
 
 function HeaderContent({ anchor }: { anchor: string }) {
@@ -318,7 +302,7 @@ function HeaderContent({ anchor }: { anchor: string }) {
         </div>
       </AppBar>
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-        <Settings/>
+        <Settings />
       </Drawer>
     </Box>
   );
@@ -389,7 +373,7 @@ function MobileHeader({
               );
             })}
           </List>
-          <Settings/>
+          <Settings />
         </Drawer>
         <Toolbar>
           <Box flexGrow={1} />
@@ -403,7 +387,7 @@ function MobileHeader({
           </IconButton>
         </Toolbar>
       </AppBar>
-      
+
       {/* add a blank toolbar to keep space and provide a scroll anchor */}
       <Toolbar id={anchor} />
     </>

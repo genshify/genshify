@@ -1,5 +1,3 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -13,8 +11,8 @@ import {
   cryoTheme,
   anemoTheme,
 } from "genshin-optimizer/ui";
-import { useRef } from "react";
-import { Swiper as SwiperType } from "swiper/types";
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 const archons = {
   nahida: {
     name: "Nahida",
@@ -68,48 +66,38 @@ const archons = {
   },
 };
 
-export default function ArchonSwiper() {
-  const { changeTheme, swiperIndex } = useThemeContext();
-  const swiperRef = useRef<SwiperType | undefined>(undefined);
-  swiperRef.current?.slideTo(swiperIndex);
+export default function ArchonSlider() {
+const { changeTheme, swiperIndex } = useThemeContext();
+const [realIndex,setRealIndex]=useState(swiperIndex)
+
+const indexFixer=(index:number)=>{
+  if(index>=7) index=0
+  if(index<0) index=6
+  return index
+  //? This function is used to fix the index of the archon when it goes out of bounds (when index is 7, it should be 0, when index is -1, it should be 6)
+  //? This is used to make the slider loop
+}
+const [currentSrc,setCurrentSrc]=useState(archons[Object.keys(archons)[indexFixer(swiperIndex)]].image)
+
+useEffect(() => {
+  setCurrentSrc(archons[Object.keys(archons)[indexFixer(swiperIndex)]].image);
+}, [swiperIndex]);
+
+  const imageSwiper=(index:number)=>{
+    index=indexFixer(index)
+    setRealIndex(index)
+    changeTheme(archons[Object.keys(archons)[index]].theme, index)
+  }
   return (
-    <Swiper
-      initialSlide={swiperIndex}
-      style={{
-        height: "400px",
-      }}
-      modules={[Navigation, Pagination]}
-      spaceBetween={50}
-      slidesPerView={1}
-      navigation
-      loop={true}
-      pagination={{ clickable: true, dynamicBullets: true }}
-      onSlideChange={(swiper) =>
-        changeTheme(
-          archons[Object.keys(archons)[swiper.realIndex]].theme,
-          swiper.realIndex
-        )
-      }
-      onSwiper={(swiper) => {
-        swiperRef.current = swiper;
-      }}
-    >
-      {Object.keys(archons).map((archon) => (
-        <SwiperSlide
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          key={archon}
-        >
-          <img
-            src={archons[archon].image}
-            className="home-img"
-            alt=""
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div className="slider-container">
+      <img src={currentSrc} className="home-img" alt="Character Image" />
+      <span style={{
+        display:"flex",
+        justifyContent:"space-around",
+      }}>
+      <Button onClick={()=>{imageSwiper(realIndex-1)}}>{archons[Object.keys(archons)[indexFixer(realIndex-1)]].name}</Button>
+      <Button onClick={()=>{imageSwiper(realIndex+1)}}>{archons[Object.keys(archons)[indexFixer(realIndex+1)]].name}</Button>
+      </span>
+    </div>
   );
 }

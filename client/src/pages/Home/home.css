@@ -1,5 +1,6 @@
 .home-img {
-  height: 400px;
+  max-width: 400px;
+  max-height: 400px;
   justify-self: center;
 }
 .home-title {
@@ -15,16 +16,17 @@
 .home-container{
   display: flex;
 }
-.swiper-container {
-  width: 50%;
-  height: 50%;
+.slider-container {
+  
+  width: 400px;
+  height: 400px;
 }
 
 @media screen and (max-width: 650px) {
   .home-container{
     flex-direction: column;
   }
-  .swiper-container{
+  .slider-container{
     width: 100%;
   }
   .home-img{

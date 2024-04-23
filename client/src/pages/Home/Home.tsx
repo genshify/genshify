@@ -1,5 +1,5 @@
+import ArchonSlider from "./ArchonSwiper";
 import "./home.css";
-import ArchonSwiper from "./ArchonSwiper";
 export default function home() {
   return (
     <div className="home">
@@ -19,7 +19,7 @@ export default function home() {
           </a>
         </div>
         <div className="swiper-container">
-          <ArchonSwiper/>
+         <ArchonSlider/>
         </div>
       </div>
     </div>
