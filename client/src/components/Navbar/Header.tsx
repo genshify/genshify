@@ -24,7 +24,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { pink } from "@mui/material/colors";
 import { useThemeContext } from "../../contexts/ThemeContext";
 import {
   cryoTheme,
@@ -160,9 +159,6 @@ function Settings() {
               value={option.value}
               sx={{
                 color: `${option.value}.main`,
-                "&.Mui-checked": {
-                  color: pink[600],
-                },
               }}
               control={<Radio />}
               label={option.label}
