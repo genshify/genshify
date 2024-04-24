@@ -280,7 +280,7 @@ export default function PageCharacter() {
           />
         }
       >
-        <CharacterContent/>
+        <CharacterContent />
       </Suspense>
       {numPages > 1 && (
         <CardDark>
@@ -312,7 +312,6 @@ export default function PageCharacter() {
 }
 
 export function CharacterContent() {
-
   const { silly } = useContext(SillyContext);
   const database = useDatabase();
   const [state, setState] = useState(() => database.displayCharacter.get());
@@ -368,7 +367,7 @@ export function CharacterContent() {
 
   const { pageIndex = 0 } = state;
 
-  const { charKeyListToShow} = useMemo(() => {
+  const { charKeyListToShow } = useMemo(() => {
     const numPages = Math.ceil(charKeyList.length / maxNumToDisplay);
     const currentPageIndex = clamp(pageIndex, 0, numPages - 1);
     return {
@@ -380,21 +379,32 @@ export function CharacterContent() {
       currentPageIndex,
     };
   }, [charKeyList, pageIndex, maxNumToDisplay]);
-  
- 
-
- 
 
   return (
-    <Grid container spacing={1} columns={columns}>
-      {charKeyListToShow.map((charKey) => (
-        <Grid item key={charKey} xs={1}>
-          <CharacterCard
-            characterKey={charKey}
-            onClick={() => navigate(`${charKey}`)}           
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <div>
+      {" "}
+      {!charKeyListToShow.length && (
+        <Button
+          style={{
+            margin: "10px auto",
+          }}
+          // reloads the page to show the updated data // ? this is a temporary solution
+          // todo: find a way to update the data without reloading the page
+          onClick={() => window.location.reload()}
+        >
+          Reload page to see showcase
+        </Button>
+      )}
+      <Grid container spacing={1} columns={columns}>
+        {charKeyListToShow.map((charKey) => (
+          <Grid item key={charKey} xs={1}>
+            <CharacterCard
+              characterKey={charKey}
+              onClick={() => navigate(`${charKey}`)}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   );
 }

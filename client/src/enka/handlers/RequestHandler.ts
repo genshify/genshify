@@ -31,13 +31,13 @@ export class RequestHandler {
       console.log("The UID format is incorrect");
 
     try {
-      const res = await fetch(`https://enka.network/api/uid/${uid}`);
+      const res = await fetch(`https://thingproxy.freeboard.io/fetch/https://enka.network/api/uid/${uid}`);
       const data = await res.json();
       return data;
     } catch (err: any) {
       throw new APIError(
         err.response.status,
-        `https://enka.network/api/uid/${uid}`
+        `https://thingproxy.freeboard.io/fetch/https://enka.network/api/uid/${uid}`
       );
     }
   }

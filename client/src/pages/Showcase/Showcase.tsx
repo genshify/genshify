@@ -11,7 +11,7 @@ import { CharacterContent } from "./CharactersPage";
 export default function Showcase() {
   const [isLoading, setIsLoading] = useState(false);
   const dataStore = useDataStore();
-
+  const [errorMessage,setErrorMessage]=useState(false)
   const [showChar, setShowChar] = useState<boolean>(false);
   const [charIndex, setCharIndex] = useState<number>(0);
   const [playerDetails, setPlayerDetails] = useState<PlayerData>();
@@ -28,6 +28,20 @@ export default function Showcase() {
       await genshin
         .getPlayer(uid)
         .then((player) => {
+          if (
+            JSON.stringify(player) ===
+            JSON.stringify({
+              player: {},
+              characters: [],
+              owner: {},
+              handler: {},
+              language: "en",
+            })
+          ) {
+            console.log("no data");
+            setErrorMessage(true)
+            return; // Exit the function if no data
+          }
           setPlayerDetails(player); // Set playerDetails
           cache.set("cacheData", player); //set Cache data into local storage
           try {
@@ -37,9 +51,6 @@ export default function Showcase() {
           } catch (error) {
             console.error("Error updating database:", error);
           }
-          // reloads the page to show the updated data // ? this is a temporary solution 
-          // todo: find a way to update the data without reloading the page
-          window.location.reload();
         })
         .catch((err) => console.log(err));
       setIsLoading(false);
@@ -81,6 +92,9 @@ export default function Showcase() {
       </div>
 
       {/* characters showcase section */}
+      {errorMessage && (<div>
+       Sorry, some error occured..
+      </div>)}
       {playerDetails && (
         <div>
           <h1>{playerDetails.player.username}'s Characters</h1>
@@ -291,7 +305,7 @@ export default function Showcase() {
               </div>
             )}
           </section>
-
+          <CharacterContent />
           {/* showcase section containing every characters */}
 
           {/* <div className="char_cards_container">
@@ -436,7 +450,6 @@ export default function Showcase() {
           )}
         </div>
       )}
-      <CharacterContent />
     </div>
   );
 }
