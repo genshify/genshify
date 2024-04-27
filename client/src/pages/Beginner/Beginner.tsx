@@ -3,6 +3,17 @@ import type { HTMLAttributes } from "react";
 import { styled } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
+// import a from "./aa.json"
+// for (const [key, value] of Object.entries(a)) {
+//   const rep=`/src/tools/genshin-optimizer/libs/assets/gen/chars/${key}/`
+//   for (const [k, v] of Object.entries(value)) {
+//     a[key][k] = v.replace(rep,"")
+//   }
+// }
+// console.log(a);
+
+
+
 interface ColorTextProps extends HTMLAttributes<HTMLSpanElement> {
   color?: keyof Palette;
   variant?: keyof PaletteColor;

@@ -6,9 +6,9 @@ import type {
   WeaponKey,
 } from "genshin-optimizer/consts";
 import { charKeyToLocGenderedCharKey } from "genshin-optimizer/consts";
-import artifacts from "./gen/artifacts";
-import chars from "./gen/chars";
-import weapons from "./gen/weapons";
+import artifacts from "./artifacts.json";
+import chars from "./chars.json";
+import weapons from "./weapons.json";
 
 export * from "./assets";
 
@@ -30,6 +30,8 @@ type characterAssetKey =
   | "constellation6"
   | "sprint"
   | "passive";
+
+const url = "https://enka.network/ui/";
 export function characterAsset(
   ck: CharacterKey,
   asset: characterAssetKey,
@@ -38,9 +40,11 @@ export function characterAsset(
   switch (asset) {
     case "icon":
     case "iconSide":
-      return chars[charKeyToLocGenderedCharKey(ck, gender)][asset] ?? ""; //gender specific
+      return url + chars[charKeyToLocGenderedCharKey(ck, gender)][asset] ?? ""; //gender specific
     default:
-      return (chars[ck] as Record<characterAssetKey, string>)[asset] ?? "";
+      return (
+        url + (chars[ck] as Record<characterAssetKey, string>)[asset] ?? ""
+      );
   }
 }
 export function artifactAsset(
@@ -53,11 +57,13 @@ export function artifactAsset(
     ak === "PrayersForWisdom" ||
     ak === "PrayersToSpringtime"
   )
-    return artifacts[ak].circlet;
-  else return artifacts[ak][slotKey] ?? "";
+    return url + artifacts[ak].circlet;
+  else return url + artifacts[ak][slotKey] ?? "";
 }
 export function weaponAsset(wk: WeaponKey, empowered = true) {
   return (
-    weapons[wk][empowered ? "awakenIcon" : "icon"] ?? weapons[wk]["icon"] ?? ""
+    url + weapons[wk][empowered ? "awakenIcon" : "icon"] ??
+    weapons[wk]["icon"] ??
+    ""
   );
 }
