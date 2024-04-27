@@ -4,6 +4,7 @@
   "homepage": "https://anaspxr.github.io/genshify",
   "version": "0.0.0",
   "type": "module",
+  
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
