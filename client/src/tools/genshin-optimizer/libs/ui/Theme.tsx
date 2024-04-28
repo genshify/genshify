@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
-import {theme as commonTheme} from "./themes";
+import { theme as commonTheme } from "./themes";
 
 declare module "@mui/material/styles" {
   interface Palette {
@@ -313,13 +313,11 @@ export const dendroTheme = createTheme({
     ...theme.palette,
     primary: {
       main: "#8ab392",
-      dark: "#0e2713",
-      light: "#edfdf1",
-      contrastText:"#0e2713"
+      contrastText: "#0e2713",
     },
     background: {
-      default: '#edfdf1',
-      paper: '#0C1020',
+      default: "#edfdf1",
+      paper: "#0C1020",
     },
   },
 });
@@ -333,8 +331,8 @@ export const pyroTheme = createTheme({
       light: "#ffc8c7",
     },
     background: {
-      default: '#ffc8c7',
-      paper: '#0C1020',
+      default: "#ffc8c7",
+      paper: "#0C1020",
     },
   },
 });
@@ -348,8 +346,8 @@ export const cryoTheme = createTheme({
       light: "#dbf3ff",
     },
     background: {
-      default: '#dbf3ff',
-      paper: '#0C1020',
+      default: "#dbf3ff",
+      paper: "#0C1020",
     },
   },
 });
@@ -363,8 +361,8 @@ export const hydroTheme = createTheme({
       light: "#9bb7ff",
     },
     background: {
-      default: '#9bb7ff',
-      paper: '#0C1020',
+      default: "#9bb7ff",
+      paper: "#0C1020",
     },
   },
 });
@@ -378,8 +376,8 @@ export const electroTheme = createTheme({
       light: "#e4c0ff",
     },
     background: {
-      default: '#e4c0ff',
-      paper: '#0C1020',
+      default: "#e4c0ff",
+      paper: "#0C1020",
     },
   },
 });
@@ -393,8 +391,8 @@ export const geoTheme = createTheme({
       light: "#ffef99",
     },
     background: {
-      default: '#ffef99',
-      paper: '#0C1020',
+      default: "#ffef99",
+      paper: "#0C1020",
     },
   },
 });
@@ -408,8 +406,8 @@ export const anemoTheme = createTheme({
       light: "#89ffc4",
     },
     background: {
-      default: '#89ffc4',
-      paper: '#0C1020',
+      default: "#89ffc4",
+      paper: "#0C1020",
     },
   },
 });
@@ -423,8 +421,8 @@ export const darkTheme = createTheme({
       light: "#9bb7ff",
     },
     background: {
-      default: '#9bb7ff',
-      paper: '#0C1020',
+      default: "#9bb7ff",
+      paper: "#0C1020",
     },
   },
 });

@@ -7,11 +7,14 @@ import { Link } from "react-router-dom";
 import { nameSetter } from "../../tools/genshin-optimizer/libs/good/goodDataMaker";
 import { useDataStore } from "../../utils/DataStore";
 import { CharacterContent } from "./CharactersPage";
-
+import { Button, IconButton } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Tooltip from "@mui/material/Tooltip";
+import HelpIcon from "@mui/icons-material/Help";
 export default function Showcase() {
   const [isLoading, setIsLoading] = useState(false);
   const dataStore = useDataStore();
-  const [errorMessage,setErrorMessage]=useState(false)
+  const [errorMessage, setErrorMessage] = useState(false);
   const [showChar, setShowChar] = useState<boolean>(false);
   const [charIndex, setCharIndex] = useState<number>(0);
   const [playerDetails, setPlayerDetails] = useState<PlayerData>();
@@ -39,7 +42,7 @@ export default function Showcase() {
             })
           ) {
             console.log("no data");
-            setErrorMessage(true)
+            setErrorMessage(true);
             return; // Exit the function if no data
           }
           setPlayerDetails(player); // Set playerDetails
@@ -92,9 +95,7 @@ export default function Showcase() {
       </div>
 
       {/* characters showcase section */}
-      {errorMessage && (<div>
-       Sorry, some error occured..
-      </div>)}
+      {errorMessage && <div>Sorry, some error occured..</div>}
       {playerDetails && (
         <div>
           <h1>{playerDetails.player.username}'s Characters</h1>
@@ -422,20 +423,39 @@ export default function Showcase() {
       )}
 
       {playerDetails && (
-        <div>
-          <button onClick={() => setJsonData(generateGoodData(playerDetails))}>
-            Click to generate json format
-          </button>
-
-          {jsonData && (
-            <div>
-              <textarea
-                disabled
-                rows={20}
-                value={jsonData}
-                className="jsonField"
-              ></textarea>
-              <button
+        <div
+          style={{
+            marginTop: "20px",
+            marginRight: "10px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <Button
+              href="https://frzyc.github.io/genshin-optimizer/#/setting"
+              target="_blank"
+            >
+              Genshin Optimizer
+              <OpenInNewIcon
+                style={{
+                  marginLeft: "5px",
+                  fontSize: "20px",
+                }}
+              />
+            </Button>
+            {!jsonData ? (
+              <Button
+                onClick={() => setJsonData(generateGoodData(playerDetails))}
+              >
+                Generate GOOD data{" "}
+              </Button>
+            ) : (
+              <Button
                 id="copy"
                 onClick={() => {
                   // ? copies the json data to the clipboard
@@ -444,9 +464,27 @@ export default function Showcase() {
                   if (copyBtn) copyBtn.textContent = "Copied to Clipboard";
                 }}
               >
-                Copy Data
-              </button>
-            </div>
+                Copy GOOD Data
+              </Button>
+            )}
+            <Tooltip title="Genshin Open Object Description (GOOD).You can use this in Genshin Optimizer to get more and accurate information about your characters.">
+              <IconButton sx={{}}>
+                <HelpIcon
+                  sx={{
+                    stroke: "black",
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+          </div>
+
+          {jsonData && (
+            <textarea
+              disabled
+              rows={20}
+              value={jsonData}
+              className="jsonField"
+            ></textarea>
           )}
         </div>
       )}
