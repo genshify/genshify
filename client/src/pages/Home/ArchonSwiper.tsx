@@ -9,7 +9,7 @@ import {
   anemoTheme,
 } from "genshin-optimizer/ui";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 const archons = {
   nahida: {
     name: "Nahida",
@@ -95,8 +95,13 @@ export default function ArchonSlider() {
     changeTheme(archons[Object.keys(archons)[index]].theme, index);
   };
   return (
-    <div className="slider-container">
-      <img src={currentSrc} className="home-img" alt="Character Image" />
+    <Box
+      sx={{
+        display: "flex",
+        flexFlow: "column",
+        maxWidth: "400px",
+      }}
+    >
       <span
         style={{
           display: "flex",
@@ -132,6 +137,7 @@ export default function ArchonSlider() {
           {archons[Object.keys(archons)[indexFixer(realIndex + 1)]].region}
         </Button>
       </span>
-    </div>
+      <img src={currentSrc} className="home-img" alt="Character Image" />
+    </Box>
   );
 }

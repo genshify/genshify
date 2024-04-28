@@ -11,7 +11,6 @@ import {
   CardContent,
   CssBaseline,
   Divider,
-  Stack,
   StyledEngineProvider,
   Typography,
 } from '@mui/material'
@@ -20,7 +19,6 @@ import { Component, Suspense } from 'react'
 import type { WithTranslation } from 'react-i18next'
 import { Trans, withTranslation } from 'react-i18next'
 import CardLight from '../components/Card/CardLight'
-import SpaghettiCode from './SpaghettiCode.png'
 
 interface Props extends WithTranslation {
   children?: ReactNode
@@ -147,15 +145,7 @@ class ErrorBoundary extends Component<Props, State> {
                             </li>
                           </Typography>
                         </ul>
-                      </CardContent>
-                      <Stack p={1}>
-                        <Box
-                          component="img"
-                          src={SpaghettiCode}
-                          maxWidth={400}
-                        />
-                        <Typography fontStyle="italic">{t`caption`}</Typography>
-                      </Stack>
+                      </CardContent>                   
                     </Box>
                     <CardContent sx={{ gap: 2, p: 0 }}>
                       <Box p={2}>
