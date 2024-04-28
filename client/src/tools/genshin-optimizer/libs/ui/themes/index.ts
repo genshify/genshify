@@ -63,12 +63,12 @@ declare module '@mui/material/InputBase' {
 
 const defaultTheme = createTheme({
   palette: {
-    mode: `dark`,
+    mode: `light`,
   },
 })
 export const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: defaultTheme.palette.augmentColor({
       color: { main: '#1e78c8' },
       name: 'primary',

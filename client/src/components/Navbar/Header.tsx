@@ -13,9 +13,8 @@ import {
   Tab,
   Tabs,
   Toolbar,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
+import Container from "@mui/material/Container";
 import { Suspense, useState } from "react";
 import { SnowToggle } from "../Effects/PrimoToggle";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -84,8 +83,7 @@ export default function Header({ anchor }: { anchor: string }) {
 }
 
 function Settings() {
-  
-  const { changeTheme,swiperIndex } = useThemeContext();
+  const { changeTheme, swiperIndex } = useThemeContext();
   const themes = {
     dendro: { theme: dendroTheme, index: 0 },
     electro: { theme: electroTheme, index: 1 },
@@ -130,7 +128,9 @@ function Settings() {
       label: "Dark Theme",
     },
   };
-  const [value, setValue] = useState(themeOptions[Object.keys(themeOptions)[swiperIndex]].value);
+  const [value, setValue] = useState(
+    themeOptions[Object.keys(themeOptions)[swiperIndex]].value
+  );
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = (event.target as HTMLInputElement).value;
     const selectedTheme =
@@ -177,9 +177,6 @@ function Settings() {
 }
 
 function HeaderContent({ anchor }: { anchor: string }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const {
     params: { currentTab },
   } = useMatch({ path: "/:currentTab", end: false }) ?? {
@@ -191,201 +188,172 @@ function HeaderContent({ anchor }: { anchor: string }) {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-
-  if (isMobile)
-    return <MobileHeader anchor={anchor} currentTab={currentTab ?? "home"} />;
-  return (
-    <Box>
-      <AppBar
-        position="static"
-        sx={{ bgcolor: "primary.light" }}
-        elevation={4}
-        id={anchor}
-      >
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            height: "60px",
-          }}
-        >
-          <Box display="flex" alignItems="center">
-            <Link to={"/"}>
-              <img
-                src={logo}
-                style={{
-                  width: "80px",
-                  marginRight: "10px",
-                  marginLeft: "10px",
-                }}
-                alt=""
-              />
-            </Link>
-          </Box>
-          <Tabs
-            centered
-            value={currentTab === "characters" ? "showcase" : currentTab}
-            sx={{
-              "& .MuiTab-root": {
-                p: 1,
-                minWidth: "auto",
-                minHeight: "auto",
-                color: "var(--darkGreen)",
-                textTransform: "none",
-                fontFamily: "var(--font)",
-                fontSize: "1rem",
-                borderRadius: "5px",
-              },
-              "& .MuiTab-root:hover": {
-                transition: "background-color 0.5s ease",
-                bgcolor: "var(--mediumGreen)",
-              },
-              ".MuiTabs-indicator": {
-                bgcolor: "var(--mediumGreen)",
-              },
-            }}
-          >
-            {content.map(({ to, value, name }) => {
-              if (value === "character") return null;
-
-              return (
-                <Tab
-                  key={value}
-                  value={value}
-                  component={Link}
-                  to={to}
-                  iconPosition="start"
-                  label={
-                    <Box display="flex" gap={1} alignItems="center">
-                      <p>{name}</p>
-                    </Box>
-                  }
-                  sx={{
-                    ml: value === "setting" ? "auto" : undefined,
-                  }}
-                />
-              );
-            })}
-          </Tabs>
-          <Box
-            onClick={toggleDrawer(true)}
-            sx={{
-              display: "flex",
-              p: 1,
-              cursor: "pointer",
-              minWidth: "auto",
-              minHeight: "auto",
-              color: "var(--darkGreen)",
-              textTransform: "none",
-              fontFamily: "var(--font)",
-              fontSize: "1rem",
-              borderRadius: "5px",
-              marginRight: "10px",
-              ":hover": {
-                transition: "background-color 0.5s ease",
-                bgcolor: "var(--mediumGreen)",
-              },
-            }}
-          >
-            <TuneIcon
-              sx={{
-                color: "var(--darkGreen)",
-              }}
-            />
-          </Box>
-        </div>
-      </AppBar>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-        <Settings />
-      </Drawer>
-    </Box>
-  );
-}
-
-// for mobile devices
-
-function MobileHeader({
-  anchor,
-  currentTab,
-}: {
-  anchor: string;
-  currentTab: string;
-}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   return (
-    <>
+    <Box>
       <AppBar
-        position="static"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexDirection: "row",
+        position="fixed"
+        sx={{
+          boxShadow: 0,
+          bgcolor: "transparent",
+          mt: 1,
         }}
-        sx={{ bgcolor: "primary.light" }}
-        elevation={1}
+        id={anchor}
       >
-        <Box display="flex" alignItems="center">
-          <Link to={"/"}>
-            <img
-              src={logo}
-              style={{
-                width: "80px",
-                marginRight: "10px",
-                marginLeft: "10px",
-              }}
-              alt=""
-            />
-          </Link>
-        </Box>
-        <Drawer
-          anchor="right"
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-        >
-          <List>
-            {content.map(({ to, value, name }) => {
-              return (
-                <ListItemButton
-                  key={value}
-                  to={to}
-                  component={Link}
-                  onClick={handleDrawerToggle}
-                  selected={currentTab === value}
-                  className="nav__item"
-                >
-                  {name}
-                </ListItemButton>
-              );
+        <Container maxWidth="xl">
+          <Toolbar
+            variant="regular"
+            sx={(theme) => ({
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexShrink: 0,
+              borderRadius: "20px",
+              bgcolor:
+                theme.palette.mode !== "dark"
+                  ? "rgba(255, 255, 255, 0.4)"
+                  : "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(24px)",
+              maxHeight: 40,
+              border: "1px solid",
+              borderColor: "divider",
+              boxShadow:
+                theme.palette.mode !== "dark"
+                  ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
+                  : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
             })}
-          </List>
-          <Settings />
-        </Drawer>
-        <Toolbar>
-          <Box flexGrow={1} />
-          <IconButton
-            color="secondary"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
           >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                ml: "-18px",
+                px: 0,
+              }}
+            >
+              <Link to={"/"}>
+                <img
+                  src={logo}
+                  style={{
+                    width: "80px",
+                    marginRight: "10px",
+                    marginLeft: "10px",
+                  }}
+                  alt="Genshify"
+                />
+              </Link>
+            </Box>
+            <Tabs
+              centered
+              value={currentTab === "characters" ? "showcase" : currentTab}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                "& .MuiTab-root": {
+                  p: 1,
+                  minWidth: "auto",
+                  height: "10px",
+                  textTransform: "none",
+                  fontSize: "1rem",
+                  borderRadius: "5px",
+                },
+                "& .MuiTab-root:hover": {
+                  transition: "background-color 0.5s ease",
+                  bgcolor: "primary.light",
+                },
+              }}
+            >
+              {content.map(({ to, value, name }) => {
+                if (value === "character") return null;
+
+                return (
+                  <Tab
+                    key={value}
+                    value={value}
+                    component={Link}
+                    to={to}
+                    iconPosition="start"
+                    label={
+                      <Box display="flex" gap={1} alignItems="center">
+                        <p>{name}</p>
+                      </Box>
+                    }
+                    sx={{
+                      ml: value === "setting" ? "auto" : undefined,
+                    }}
+                  />
+                );
+              })}
+            </Tabs>
+            <Box
+              onClick={toggleDrawer(true)}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                p: 1,
+                cursor: "pointer",
+                minWidth: "auto",
+                minHeight: "auto",
+                color: "text.primary",
+                textTransform: "none",
+                fontSize: "1rem",
+                borderRadius: "5px",
+                marginRight: "10px",
+                ":hover": {
+                  transition: "background-color 0.5s ease",
+                  bgcolor: "primary.light",
+                },
+              }}
+            >
+              <TuneIcon />
+            </Box>       
+            <Toolbar sx={{ display: { xs: "", sm: "none" } }}>
+              <Box flexGrow={1} />
+              <IconButton
+                color="secondary"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+            <Drawer
+              anchor="right"
+              variant="temporary"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+            >
+              <List>
+                {content.map(({ to, value, name }) => {
+                  return (
+                    <ListItemButton
+                      key={value}
+                      to={to}
+                      component={Link}
+                      onClick={handleDrawerToggle}
+                      selected={currentTab === value}
+                      className="nav__item"
+                    >
+                      {name}
+                    </ListItemButton>
+                  );
+                })}
+              </List>
+              <Settings />
+            </Drawer>
+          </Toolbar>
+        </Container>
       </AppBar>
 
-      {/* add a blank toolbar to keep space and provide a scroll anchor */}
-      <Toolbar id={anchor} />
-    </>
+      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+        <Settings />
+      </Drawer>
+    </Box>
   );
 }

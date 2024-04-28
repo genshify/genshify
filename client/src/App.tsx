@@ -4,6 +4,7 @@ import About from "./pages/About/About";
 import Beginner from "./pages/Beginner/Beginner";
 import Showcase from "./pages/Showcase/Showcase";
 import CharacterDisplay from "./pages/Showcase/CharactersPage/CharacterDisplay";
+import LandingPage from "./pages/test/LandingPage";
 
 import { Container, Grid, Skeleton,CssBaseline } from "@mui/material";
 import { DatabaseContext } from "genshin-optimizer/db-ui";
@@ -73,7 +74,9 @@ export default function App() {
                       minHeight="100vh"
                       position="relative"
                     >
-                      <Grid item>
+                      <Grid style={{
+                        marginBottom:"100px"
+                      }} item>
                         <Header anchor="back-to-top-anchor" />
                       </Grid>
                       <Container
@@ -90,6 +93,7 @@ export default function App() {
                         >
                           <Routes>
                             <Route index element={<Home />} />
+                            <Route path="/landing" element={<LandingPage />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/beginner" element={<Beginner />} />
                             <Route path="showcase/*">

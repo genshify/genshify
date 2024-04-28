@@ -313,6 +313,7 @@ export const dendroTheme = createTheme({
     ...theme.palette,
     primary: {
       main: "#8ab392",
+      light: "#edfdf1",
       contrastText: "#0e2713",
     },
     background: {
