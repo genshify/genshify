@@ -4,9 +4,9 @@ import About from "./pages/About/About";
 import Beginner from "./pages/Beginner/Beginner";
 import Showcase from "./pages/Showcase/Showcase";
 import CharacterDisplay from "./pages/Showcase/CharactersPage/CharacterDisplay";
-import LandingPage from "./pages/test/LandingPage";
+import { alpha } from "@mui/material";
 
-import { Container, Grid, Skeleton,CssBaseline } from "@mui/material";
+import { Container, Grid, Skeleton, CssBaseline } from "@mui/material";
 import { DatabaseContext } from "genshin-optimizer/db-ui";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -64,7 +64,7 @@ export default function App() {
           path="/*"
           element={
             <ThemeProviderComponent>
-              <CssBaseline/>
+              <CssBaseline />
               <SnowContext.Provider value={SnowContextObj}>
                 <DatabaseContext.Provider value={dbContextObj}>
                   <ErrorBoundary>
@@ -73,10 +73,25 @@ export default function App() {
                       direction="column"
                       minHeight="100vh"
                       position="relative"
+                      sx={(theme) => ({
+                        width: "100%",
+                        backgroundImage:
+                          theme.palette.mode !== "dark"
+                            ?`linear-gradient(180deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
+                            : `linear-gradient(#02294F, ${alpha(
+                                "#090E10",
+                                0.0
+                              )})`,
+                        backgroundSize: "100% 500px",
+                        backgroundRepeat: "no-repeat",
+                      })}
                     >
-                      <Grid style={{
-                        marginBottom:"100px"
-                      }} item>
+                      <Grid
+                        style={{
+                          marginBottom: "100px",
+                        }}
+                        item
+                      >
                         <Header anchor="back-to-top-anchor" />
                       </Grid>
                       <Container
@@ -93,7 +108,6 @@ export default function App() {
                         >
                           <Routes>
                             <Route index element={<Home />} />
-                            <Route path="/landing" element={<LandingPage />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/beginner" element={<Beginner />} />
                             <Route path="showcase/*">

@@ -1,22 +1,25 @@
 import { useState } from "react";
-import "./showcase.css";
 import { PlayerData, Wrapper } from "../../enka";
 import { generateGoodData } from "../../tools/genshin-optimizer/libs/good/goodDataMaker";
 import { CacheHandler } from "../../enka/handlers/CacheHandler";
-import { Link } from "react-router-dom";
-import { nameSetter } from "../../tools/genshin-optimizer/libs/good/goodDataMaker";
 import { useDataStore } from "../../utils/DataStore";
 import { CharacterContent } from "./CharactersPage";
-import { Button, IconButton } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import Container from "@mui/material/Container";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Tooltip from "@mui/material/Tooltip";
 import HelpIcon from "@mui/icons-material/Help";
+import Grid from "@mui/material/Grid";
 export default function Showcase() {
   const [isLoading, setIsLoading] = useState(false);
   const dataStore = useDataStore();
   const [errorMessage, setErrorMessage] = useState(false);
-  const [showChar, setShowChar] = useState<boolean>(false);
-  const [charIndex, setCharIndex] = useState<number>(0);
   const [playerDetails, setPlayerDetails] = useState<PlayerData>();
   const cache = new CacheHandler();
 
@@ -63,12 +66,6 @@ export default function Showcase() {
     }
   };
 
-  const showCharacterDetails = (id: number) => {
-    // ? shows the selected (clicked) character
-    setCharIndex(id);
-    setShowChar(true);
-  };
-
   // ? gets the cached data from the local storage and sets it to the state
   if (playerDetails === undefined) {
     const cachedData = cache.get("cacheData");
@@ -79,346 +76,88 @@ export default function Showcase() {
 
   const [jsonData, setJsonData] = useState<string>("");
   return (
-    <div className="char section">
-      <h2 className="section__title-center">Character Details</h2>
-      {/* search section */}
-      <div className="search__container">
-        <div className="input__box">
-          {/*test Uid: 825436941 840889067  801669600*/}
-          <input id="uidInput" type="text" placeholder="Enter your id" />
-          <button onClick={searchPlayer} disabled={isLoading}>
-            {isLoading ? "Updating..." : "SEARCH"}
-          </button>
-        </div>
-        <p>Search your UID to show your characters..</p>
-        <div id="chars--container"></div>
-      </div>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Stack spacing={2} useFlexGap sx={{ width: { xs: "100%", sm: "70%" } }}>
+        <Typography
+          component="span"
+          variant="h3"
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignSelf: "center",
+            textAlign: "center",
+            fontSize: { xs: "1.5rem", sm: "2rem" },
+          }}
+        >
+          Character Showcase
+        </Typography>
 
+        <Typography
+          textAlign="center"
+          color="text.secondary"
+          sx={{ alignSelf: "center", width: { sm: "100%", md: "80%" } }}
+        >
+          Genshin Character showcase to view your own in-game
+          characters with detailed information. Including damage numbers and
+          build guides too..!!
+        </Typography>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          alignSelf="center"
+          spacing={1}
+          useFlexGap
+          sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
+        >
+          <TextField
+            id="uidInput"
+            hiddenLabel
+            size="small"
+            variant="outlined"
+            aria-label="Enter your email address"
+            placeholder="Enter your genshin uid"
+            inputProps={{
+              autocomplete: "off",
+              ariaLabel: "Enter your email address",
+            }}
+          />
+          <Button
+            onClick={searchPlayer}
+            disabled={isLoading}
+            variant="contained"
+            color="primary"
+          >
+            {isLoading ? "Updating..." : "Search"}
+          </Button>
+        </Stack>
+        <Typography variant="caption" textAlign="center" sx={{ opacity: 0.8 }}>
+          Search your UID to show your characters..
+        </Typography>
+        {/*test Uid: 825436941 840889067  801669600*/}
+      </Stack>
       {/* characters showcase section */}
       {errorMessage && <div>Sorry, some error occured..</div>}
       {playerDetails && (
         <div>
           <h1>{playerDetails.player.username}'s Characters</h1>
           <div className="charSideIconContainer">
-            {playerDetails.characters.map((character, index) => (
-              <div
-                key={index}
-                onClick={() => showCharacterDetails(index)}
-                className={`charSideIcon bg_${character.element}`}
-              >
-                <img
-                  src={`https://enka.network/ui/${character.assets.sideIcon}.png`}
-                />
-              </div>
-            ))}
+            <Grid container justifyContent="center" sx={{ m: 1, opacity: 0.6 }}>
+              {playerDetails.characters.map((character, index) => (
+                <Grid item key={index}>
+                  <img
+                    src={`https://enka.network/ui/${character.assets.sideIcon}.png`}
+                    alt={character.name}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           </div>
-          {/* selected character details section */}
-          <section id="charDetails">
-            {showChar && playerDetails && (
-              <div
-                className={`char__details bg_${playerDetails.characters[charIndex].element}`}
-              >
-                <div className="charDivRow1">
-                  <div className="charCardCol1 charIconName cardDarkColor">
-                    <img
-                      className="charIcon"
-                      src={`https://enka.network/ui/${playerDetails.characters[charIndex].assets.icon}.png`}
-                    />
-                    <p className="charName">
-                      {playerDetails.characters[charIndex].name}
-                    </p>
-                    <p className="charLvl">
-                      {playerDetails.characters[charIndex].maxLevel}
-                    </p>
-                  </div>
-                  <div className="charStatsInfo charCardCol2 cardDarkColor">
-                    <div className="charStatsInfoCol1">
-                      <p>
-                        hp:
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats.maxHp
-                              .value
-                          )
-                        )}
-                      </p>
-                      <p>
-                        Atk :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats.atk.value
-                          )
-                        )}
-                      </p>
-                      <p>
-                        Def :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats.def.value
-                          )
-                        )}
-                      </p>
-                      <p>
-                        Em :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats
-                              .elementalMastery.value
-                          )
-                        )}
-                      </p>
-                    </div>
-                    <div className="charStatsInfoCol2">
-                      <p>
-                        Cr :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats.critRate
-                              .value
-                          ) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        Cd :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats.critDamage
-                              .value
-                          ) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        Er :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats
-                              .energyRecharge.value
-                          ) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        {playerDetails.characters[charIndex].element}dmg% :{" "}
-                        {Math.round(
-                          Number(
-                            playerDetails.characters[charIndex].stats
-                              .pyroDamageBonus.value
-                          ) * 100
-                        )}
-                        %
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="charDivRow2">
-                  <div className="charWeapon charCardCol1 cardDarkColor">
-                    <p className="weaponP">
-                      <img
-                        className=" weaponImg"
-                        src={`https://enka.network/ui/${playerDetails.characters[charIndex].equipment.weapon.assets.icon}.png`}
-                        alt=""
-                      />
-                      {
-                        playerDetails.characters[charIndex].equipment.weapon
-                          .level
-                      }
-                    </p>
-                    <p className="weaponName">
-                      {
-                        playerDetails.characters[charIndex].equipment.weapon
-                          .name
-                      }
-                    </p>
-                  </div>
-                  <div className="charCardCol2 cardDarkColor">
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${playerDetails.characters[charIndex].assets.talents.normalAttack}.png`}
-                        alt=""
-                      />
-                      {
-                        playerDetails.characters[charIndex].skills.normalAttacks
-                          .level
-                      }
-                    </p>
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${playerDetails.characters[charIndex].assets.talents.elementalSkill}.png`}
-                        alt=""
-                      />
-                      {
-                        playerDetails.characters[charIndex].skills
-                          .elementalSkill.level
-                      }
-                    </p>
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${playerDetails.characters[charIndex].assets.talents.elementalBurst}.png`}
-                        alt=""
-                      />
-                      {
-                        playerDetails.characters[charIndex].skills
-                          .elementalBurst.level
-                      }
-                    </p>
-                  </div>
-                </div>
-                <div className="charDivRow3">
-                  <div className="charConstl cardDarkColor">
-                    {playerDetails.player.showcase[
-                      charIndex
-                    ].assets.constellations.map((constellation, index) => (
-                      <div key={index} className="constlCircle">
-                        {playerDetails.characters[charIndex].constellationsList[
-                          index
-                        ] ? (
-                          <img
-                            className="constlImg"
-                            src={`https://enka.network/ui/${constellation}.png`}
-                            alt=""
-                          />
-                        ) : (
-                          <img
-                            className="constlImgDisabled"
-                            src={`https://enka.network/ui/${constellation}.png`}
-                            alt=""
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    <Link
-                      className="showDetailedStatsButton"
-                      to={`/characters/${nameSetter(
-                        playerDetails.characters[charIndex].name
-                      )}`}
-                    >
-                      show detailed stats
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )}
-          </section>
           <CharacterContent />
-          {/* showcase section containing every characters */}
-
-          {/* <div className="char_cards_container">
-            {playerDetails.characters.map((character, index) => (
-              <div
-                key={index}
-                className={`charDiv bg_${character.element}`}
-                onClick={() => showCharacterDetails(index)}
-              >
-                <div className="charDivRow1">
-                  <div className="charCardCol1 charIconName cardDarkColor">
-                    <img
-                      className="charIcon"
-                      src={`https://enka.network/ui/${character.assets.icon}.png`}
-                    />
-                    <p className="charName">{character.name}</p>
-                    <p className="charLvl">{character.maxLevel}</p>
-                  </div>
-                  <div className="charStatsInfo charCardCol2 cardDarkColor">
-                    <div className="charStatsInfoCol1">
-                      <p>
-                        hp:{Math.round(Number(character.stats.maxHp.value))}
-                      </p>
-                      <p>
-                        Atk : {Math.round(Number(character.stats.atk.value))}
-                      </p>
-                      <p>
-                        Def : {Math.round(Number(character.stats.def.value))}
-                      </p>
-                      <p>
-                        Em :{" "}
-                        {Math.round(
-                          Number(character.stats.elementalMastery.value)
-                        )}
-                      </p>
-                    </div>
-                    <div className="charStatsInfoCol2">
-                      <p>
-                        Cr :{" "}
-                        {Math.round(
-                          Number(character.stats.critRate.value) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        Cd :{" "}
-                        {Math.round(
-                          Number(character.stats.critDamage.value) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        Er :{" "}
-                        {Math.round(
-                          Number(character.stats.energyRecharge.value) * 100
-                        )}
-                        %
-                      </p>
-                      <p>
-                        {character.element}dmg% :{" "}
-                        {Math.round(
-                          Number(character.stats.pyroDamageBonus.value) * 100
-                        )}
-                        %
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="charDivRow2">
-                  <div className="charWeapon charCardCol1 cardDarkColor">
-                    <p className="weaponP">
-                      <img
-                        className=" weaponImg"
-                        src={`https://enka.network/ui/${character.equipment.weapon.assets.icon}.png`}
-                        alt=""
-                      />
-                      {character.equipment.weapon.level}
-                    </p>
-                    <p className="weaponName">
-                      {character.equipment.weapon.name}
-                    </p>
-                  </div>
-                  <div className="charCardCol2 cardDarkColor">
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${character.assets.talents.normalAttack}.png`}
-                        alt=""
-                      />
-                      {character.skills.normalAttacks.level}
-                    </p>
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${character.assets.talents.elementalSkill}.png`}
-                        alt=""
-                      />
-                      {character.skills.elementalSkill.level}
-                    </p>
-                    <p className="talentP">
-                      <img
-                        className="talentImg"
-                        src={`https://enka.network/ui/${character.assets.talents.elementalBurst}.png`}
-                        alt=""
-                      />
-                      {character.skills.elementalBurst.level}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div> */}
         </div>
       )}
 
@@ -488,6 +227,6 @@ export default function Showcase() {
           )}
         </div>
       )}
-    </div>
+    </Container>
   );
 }
