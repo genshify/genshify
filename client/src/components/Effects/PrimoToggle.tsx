@@ -8,14 +8,12 @@ export function SnowToggle() {
   const { snow, setSnow } = useContext(SnowContext);
   return (
     <Button 
-      sx={{ m: 1,
-        background: "background.paper",
-        color: "text.primary",
-        "&:hover": {
-          background: "background.default",
-        },
-       }}    
-      color={snow ? "primary" : "secondary"}
+    sx={{ m: 1,
+      bgcolor:snow ? "primary.dark" : "primary.main",
+      "&:hover": {
+        background: "background.default",
+      },
+     }}    
       onClick={() => setSnow(!snow)}
       startIcon={snow ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
     >

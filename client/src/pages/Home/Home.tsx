@@ -1,4 +1,4 @@
-import ArchonSlider from "./ArchonSwiper";
+import ArchonSlider from "./ArchonSlider/ArchonSwiper";
 import Regions from "./Regions/Regions";
 import { useThemeContext } from "../../contexts/ThemeContext";
 

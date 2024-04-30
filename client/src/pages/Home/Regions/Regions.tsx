@@ -6,7 +6,7 @@ import fontaineData from "./fontaine.json";
 import natlanData from "./natlan.json";
 import snezhnayaData from "./snezhnaya.json";
 import khaenriahData from "./khaenriah.json";
-import { Box, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { useThemeContext } from "../../../contexts/ThemeContext";
 export default function Regions() {
   const { swiperIndex } = useThemeContext();
@@ -21,18 +21,20 @@ export default function Regions() {
     khaenriahData,
   ];
   return (
-    <Box>
-      <Typography variant="h3">
+    <Box sx={{
+      display:"flex",
+      flexFlow:"column"
+    }}>
+      <Typography variant="h3" fontSize={{ xs: "1.5rem", sm: "2rem",md:"3rem" }} >
         The 
       </Typography>
-       <Typography variant="h3" sx={{
+       <Typography variant="h3" fontSize={{ xs: "1.5rem", sm: "2rem",md:"3rem" }} sx={{
         color:"primary.dark"
-       }}> {regionArray[swiperIndex].heading}</Typography>
+       }}>{regionArray[swiperIndex].heading}</Typography>
       <Typography >{regionArray[swiperIndex].description}</Typography>
-      <a href="#" className="button button-flex">
+      <Link color={"primary.dark"} href="#" className="button button-flex">
         Take a Tour
-        <i className="ri-arrow-right-line button-icon"></i>
-      </a>
+      </Link>
     </Box>
   );
 }

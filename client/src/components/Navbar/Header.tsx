@@ -46,23 +46,23 @@ const home: ITab = {
   name: "Home",
 };
 
-const about: ITab = {
-  to: "/about",
-  value: "about",
-  name: "About",
+const explore: ITab = {
+  to: "/#explore",
+  value: "explore",
+  name: "Explore",
 };
 const banner: ITab = {
-  to: "/banner",
+  to: "/#banner",
   value: "banner",
   name: "Banner",
 };
 const events: ITab = {
-  to: "/events",
+  to: "/#events",
   value: "events",
   name: "Events",
 };
 const tips: ITab = {
-  to: "/tips",
+  to: "/#tips",
   value: "tips",
   name: "Tips",
 };
@@ -72,7 +72,7 @@ const showcase: ITab = {
   name: "Showcase",
 };
 
-const content = [home, about, banner, events, tips, showcase] as const;
+const content = [home, explore, banner, events, tips, showcase] as const;
 export default function Header({ anchor }: { anchor: string }) {
   return (
     <Suspense fallback={<Skeleton variant="rectangular" height={56} />}>
@@ -182,7 +182,7 @@ function HeaderContent({ anchor }: { anchor: string }) {
   } = useMatch({ path: "/:currentTab", end: false }) ?? {
     params: { currentTab: "home" },
   };
-
+  
   //? Drawer for settings
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -192,6 +192,19 @@ function HeaderContent({ anchor }: { anchor: string }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  const scrollToSection = (sectionId: string) => {
+    const sectionElement = document.getElementById(sectionId);
+    const offset = 128;
+    if (sectionElement) {
+      const targetScroll = sectionElement.offsetTop - offset;
+      sectionElement.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
+      setOpen(false);
+    }
+  };  
 
   return (
     <Box>
@@ -268,9 +281,13 @@ function HeaderContent({ anchor }: { anchor: string }) {
             >
               {content.map(({ to, value, name }) => {
                 if (value === "character") return null;
-
                 return (
                   <Tab
+                    onClick={() => {
+                      if (to.includes("#")) {
+                        scrollToSection(`${value}`);
+                      }
+                    }}
                     key={value}
                     value={value}
                     component={Link}
@@ -308,7 +325,7 @@ function HeaderContent({ anchor }: { anchor: string }) {
               }}
             >
               <TuneIcon />
-            </Box>       
+            </Box>
             <Toolbar sx={{ display: { xs: "", sm: "none" } }}>
               <Box flexGrow={1} />
               <IconButton
@@ -338,7 +355,6 @@ function HeaderContent({ anchor }: { anchor: string }) {
                       component={Link}
                       onClick={handleDrawerToggle}
                       selected={currentTab === value}
-                      className="nav__item"
                     >
                       {name}
                     </ListItemButton>

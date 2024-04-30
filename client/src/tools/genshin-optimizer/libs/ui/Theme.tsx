@@ -318,7 +318,7 @@ export const dendroTheme = createTheme({
     },
     background: {
       default: "#edfdf1",
-      paper: "#0C1020",
+      paper: "#edfdf1",
     },
   },
 });
@@ -333,7 +333,7 @@ export const pyroTheme = createTheme({
     },
     background: {
       default: "#ffc8c7",
-      paper: "#0C1020",
+      paper: "#ffc8c7",
     },
   },
 });
@@ -343,12 +343,12 @@ export const cryoTheme = createTheme({
     ...theme.palette,
     primary: {
       main: "#aed0ff",
-      dark: "	#95bfff",
+      dark: "#95bfff",
       light: "#dbf3ff",
     },
     background: {
       default: "#dbf3ff",
-      paper: "#0C1020",
+      paper: "#dbf3ff",
     },
   },
 });
@@ -363,7 +363,7 @@ export const hydroTheme = createTheme({
     },
     background: {
       default: "#9bb7ff",
-      paper: "#0C1020",
+      paper: "#9bb7ff",
     },
   },
 });
@@ -378,7 +378,7 @@ export const electroTheme = createTheme({
     },
     background: {
       default: "#e4c0ff",
-      paper: "#0C1020",
+      paper: "#e4c0ff",
     },
   },
 });
@@ -393,7 +393,7 @@ export const geoTheme = createTheme({
     },
     background: {
       default: "#ffef99",
-      paper: "#0C1020",
+      paper: "#ffef99",
     },
   },
 });
@@ -403,12 +403,12 @@ export const anemoTheme = createTheme({
     ...theme.palette,
     primary: {
       main: "#00ff7f",
-      dark: "	#008944",
+      dark: "#008944",
       light: "#89ffc4",
     },
     background: {
       default: "#89ffc4",
-      paper: "#0C1020",
+      paper: "#89ffc4",
     },
   },
 });

@@ -23,6 +23,7 @@ import Footer from "./components/Navbar/Footer";
 import Header from "./components/Navbar/Header";
 import { SnowContext, useSnow } from "./contexts/PrimoContext";
 import { ThemeProviderComponent } from "./contexts/ThemeContext";
+import ScrollToHashElement from "./utils/ScrollToHashElements";
 
 export default function App() {
   // ? retrieves the dbIndex from local storage, parsing it into an integer. index indicates which database to use.
@@ -65,6 +66,7 @@ export default function App() {
           element={
             <ThemeProviderComponent>
               <CssBaseline />
+              <ScrollToHashElement/>
               <SnowContext.Provider value={SnowContextObj}>
                 <DatabaseContext.Provider value={dbContextObj}>
                   <ErrorBoundary>
@@ -108,6 +110,7 @@ export default function App() {
                         >
                           <Routes>
                             <Route index element={<Home />} />
+                            <Route path="/#explore" element={<Home />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/beginner" element={<Beginner />} />
                             <Route path="showcase/*">

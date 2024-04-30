@@ -121,10 +121,6 @@ export default function Showcase() {
             variant="outlined"
             aria-label="Enter your email address"
             placeholder="Enter your genshin uid"
-            inputProps={{
-              autocomplete: "off",
-              ariaLabel: "Enter your email address",
-            }}
           />
           <Button
             onClick={searchPlayer}
