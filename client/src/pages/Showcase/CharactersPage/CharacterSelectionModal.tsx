@@ -33,7 +33,6 @@ import {
 } from "@mui/material";
 import type { ChangeEvent } from "react";
 import {
-  useContext,
   useDeferredValue,
   useEffect,
   useMemo,
@@ -51,7 +50,6 @@ import { StarsDisplay } from "../../../libs/GO-files/Components/StarDisplay";
 import ElementToggle from "../../../libs/GO-files/Components/ToggleButton/ElementToggle";
 import WeaponToggle from "../../../libs/GO-files/Components/ToggleButton/WeaponToggle";
 import { DataContext } from "../../../contexts/DataContext";
-import { SillyContext } from "../../../contexts/SillyContext";
 import { getCharSheet } from "../../../libs/GO-files/Data/Characters";
 import type CharacterSheet from "../../../libs/GO-files/Data/Characters/CharacterSheet";
 import { iconAsset } from "../../../libs/GO-files/Util/AssetUtil";
@@ -85,10 +83,8 @@ export default function CharacterSelectionModal({
   const { t } = useTranslation([
     "page_character",
     // Always load these 2 so character names are loaded for searching/sorting
-    "sillyWisher_charNames",
     "charNames_gen",
   ]);
-  const { silly } = useContext(SillyContext);
   const database = useDatabase();
   const [state, setState] = useState(() => database.displayCharacter.get());
   useEffect(
@@ -125,14 +121,14 @@ export default function CharacterSelectionModal({
         .filter(
           filterFunction(
             { element, weaponType, name: deferredSearchTerm },
-            characterFilterConfigs(database, silly)
+            characterFilterConfigs(database)
           )
         )
         .sort(
           sortFunction(
             sortByKeys,
             ascending,
-            characterSortConfigs(database, silly),
+            characterSortConfigs(database),
             ["new", "favorite"]
           )
         )
@@ -143,7 +139,6 @@ export default function CharacterSelectionModal({
     deferredDbDirty,
     deferredSearchTerm,
     database,
-    silly,
     filter,
     gender,
   ]);

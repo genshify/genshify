@@ -19,7 +19,6 @@ import type { ChangeEvent } from "react";
 import React, {
   Suspense,
   useCallback,
-  useContext,
   useDeferredValue,
   useEffect,
   useMemo,
@@ -35,7 +34,6 @@ import PageAndSortOptionSelect from "../../../libs/GO-files/Components/PageAndSo
 import CharacterRarityToggle from "../../../libs/GO-files/Components/ToggleButton/CharacterRarityToggle";
 import ElementToggle from "../../../libs/GO-files/Components/ToggleButton/ElementToggle";
 import WeaponToggle from "../../../libs/GO-files/Components/ToggleButton/WeaponToggle";
-import { SillyContext } from "./../../../contexts/SillyContext";
 import { getCharSheet } from "../../../libs/GO-files/Data/Characters";
 import { getWeaponSheet } from "../../../libs/GO-files/Data/Weapons";
 import useCharSelectionCallback from "../../../libs/GO-files/ReactHooks/useCharSelectionCallback";
@@ -55,10 +53,8 @@ export default function PageCharacter() {
   const { t } = useTranslation([
     "page_character",
     // Always load these 2 so character names are loaded for searching/sorting
-    "sillyWisher_charNames",
     "charNames_gen",
   ]);
-  const { silly } = useContext(SillyContext);
   const database = useDatabase();
 
   const [state, setState] = useState(() => database.displayCharacter.get());
@@ -106,19 +102,19 @@ export default function PageCharacter() {
       .filter(
         filterFunction(
           { element, weaponType, rarity, name: deferredSearchTerm },
-          characterFilterConfigs(database, silly)
+          characterFilterConfigs(database)
         )
       )
       .sort(
         sortFunction(
           characterSortMap[sortType] ?? [],
           ascending,
-          characterSortConfigs(database, silly),
+          characterSortConfigs(database),
           ["new", "favorite"]
         )
       );
     return deferredDbDirty && { charKeyList, totalCharNum };
-  }, [database, deferredState, deferredSearchTerm, silly, deferredDbDirty]);
+  }, [database, deferredState, deferredSearchTerm, deferredDbDirty]);
 
   const { weaponType, element, rarity, pageIndex = 0 } = state;
 
@@ -312,7 +308,6 @@ export default function PageCharacter() {
 }
 
 export function CharacterContent() {
-  const { silly } = useContext(SillyContext);
   const database = useDatabase();
   const [state, setState] = useState(() => database.displayCharacter.get());
   useEffect(
@@ -351,19 +346,19 @@ export function CharacterContent() {
       .filter(
         filterFunction(
           { element, weaponType, rarity, name: deferredSearchTerm },
-          characterFilterConfigs(database, silly)
+          characterFilterConfigs(database)
         )
       )
       .sort(
         sortFunction(
           characterSortMap[sortType] ?? [],
           ascending,
-          characterSortConfigs(database, silly),
+          characterSortConfigs(database),
           ["new", "favorite"]
         )
       );
     return deferredDbDirty && { charKeyList, totalCharNum };
-  }, [database, deferredState, deferredSearchTerm, silly, deferredDbDirty]);
+  }, [database, deferredState, deferredSearchTerm, deferredDbDirty]);
 
   const { pageIndex = 0 } = state;
 
